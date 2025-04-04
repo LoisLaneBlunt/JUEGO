@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Juego de Agroecología y Resiliencia</title>
+  <style>
+    body { font-family: Arial, sans-serif; background: #f4f4f4; padding: 20px; }
+    h1 { color: #2e7d32; }
+    .container { max-width: 800px; margin: auto; background: white; padding: 20px; border-radius: 10px; }
+    .card { background: #e8f5e9; border: 1px solid #a5d6a7; border-radius: 10px; padding: 15px; margin: 10px 0; cursor: pointer; transition: 0.3s; }
+    .card:hover { background: #c8e6c9; }
+    .question { font-weight: bold; margin-bottom: 10px; }
+    .result { margin-top: 20px; font-size: 1.2em; color: #1b5e20; }
+    .hidden { display: none; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🌿 Juego: Agroecología y Resiliencia</h1>
+    <p>Haz clic en la frase que se relacione con el indicador mostrado.</p>
+
+    <div class="question" id="question"></div>
+    <div id="options"></div>
+    <div class="result" id="result"></div>
+    <button onclick="nextQuestion()">Siguiente</button>
+  </div>
+
+  <script>
+    const questions = [
+      {
+        indicator: "Diversidad",
+        correct: "La agroecología promueve la diversidad de paisajes, animales, plantas y prácticas"
+      },
+      {
+        indicator: "Conectividad",
+        correct: "La agroecología fortalece las redes de agricultores"
+      },
+      {
+        indicator: "Rentabilidad económica",
+        correct: "El video destaca la relevancia de la dimensión socioeconómica"
+      }
+    ];
+
+    const phrases = [
+      "El cambio climático está amenazando la seguridad alimentaria",
+      "La resiliencia determina la solidez de los sistemas alimentarios ante condiciones cambiantes",
+      "La agroecología fortalece la resiliencia y apoya una vía de bajas emisiones",
+      "La agroecología promueve la diversidad de paisajes, animales, plantas y prácticas",
+      "La agroecología pone a las personas y el conocimiento en el centro, centrándose en soluciones locales",
+      "La agroecología fortalece las redes de agricultores",
+      "El video destaca la relevancia de la dimensión socioeconómica"
+    ];
+
+    let current = 0;
+
+    function shuffle(array) {
+      return array.sort(() => Math.random() - 0.5);
+    }
+
+    function loadQuestion() {
+      const q = questions[current];
+      document.getElementById('question').innerText = `🌟 Indicador: ${q.indicator}`;
+      const shuffled = shuffle([...phrases]);
+      const options = document.getElementById('options');
+      options.innerHTML = '';
+
+      shuffled.forEach(text => {
+        const div = document.createElement('div');
+        div.className = 'card';
+        div.innerText = text;
+        div.onclick = () => checkAnswer(text, q.correct);
+        options.appendChild(div);
+      });
+      document.getElementById('result').innerText = '';
+    }
+
+    function checkAnswer(selected, correct) {
+      const result = document.getElementById('result');
+      if (selected === correct) {
+        result.innerText = "🎉 ¡Correcto!";
+      } else {
+        result.innerText = "❌ Incorrecto. Inténtalo de nuevo.";
+      }
+    }
+
+    function nextQuestion() {
+      current = (current + 1) % questions.length;
+      loadQuestion();
+    }
+
+    loadQuestion();
+  </script>
+</body>
+</html>
